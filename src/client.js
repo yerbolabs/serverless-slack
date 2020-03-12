@@ -178,7 +178,7 @@ class Client {
    */
   getToken(args) {
     console.log('getToken');
-    console.dir(code);
+    console.dir(args.code);
     console.dir(process.env.CLIENT_ID);
     console.dir(process.env.CLIENT_SECRET);
     return this.send('oauth.v2.access', {
