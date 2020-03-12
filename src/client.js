@@ -38,7 +38,7 @@ class Client {
    * @return {String} the payload's channel
    */
   get channel() {
-    let payload = this.payload, event = payload.event, auth = this.auth;
+    let payload = this.payload, event = payload.event;
     // Slash Commands
     if (payload.channel_id) return payload.channel_id;
     
@@ -57,7 +57,7 @@ class Client {
    * @return {String} the team's API token
    */
   get token() {
-    let auth = this.auth, bot = auth.bot;
+    let auth = this.auth;
     return auth.bot ? auth.bot.bot_access_token : auth.access_token;
   }
 
@@ -116,7 +116,7 @@ class Client {
    * Send data to Slack's API
    *
    * @param {string} endPoint - The method name or url (optional - defaults to chat.postMessage)
-   * @param {object} data - The JSON payload to send
+   * @param {object} message - The JSON payload to send
    * @return {Promise} A promise with the API response
    */
   send(endPoint, message) {
@@ -163,7 +163,7 @@ class Client {
     });
 
     // sends a 301 redirect
-    return 'https://slack.com/oauth/authorize?' + qs.stringify(args);
+    return 'https://slack.com/oauth/v2/authorize?' + qs.stringify(args);
   }
 
 
@@ -174,7 +174,7 @@ class Client {
    * @return {Promise} A promise with the API response
    */
   getToken(args) {
-    return this.send('oauth.access', { 
+    return this.send('oauth.v2.access', {
       code: args.code,
       state: args.state, 
       client_id: process.env.CLIENT_ID, 
