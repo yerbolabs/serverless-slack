@@ -9,7 +9,7 @@ class Slack extends EventEmitter {
   constructor(options) {
     super();
     this.store = require('./dynamo'); // default
-    this.ignoreBots = true; // ignore other bot message
+    this.ignoreBots = false; // ignore other bot message
   }
 
 
@@ -71,9 +71,6 @@ class Slack extends EventEmitter {
    * @param {Function} callback - The Lambda callback
    */
   event(event, context, callback) {
-    console.log('handling event');
-    console.dir(event);
-    console.dir(context);
     let payload = event.body;
     let id = payload.team_id;
     let token = process.env.VERIFICATION_TOKEN;
