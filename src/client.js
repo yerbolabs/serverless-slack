@@ -157,6 +157,9 @@ class Client {
    * @return {String} The payload's response url
    */
   getAuthUrl(args) {
+    console.log('getAuthUrl');
+    console.dir(process.env.CLIENT_ID);
+    console.dir(process.env.CLIENT_SCOPES);
     args = Object.assign({}, args, {
       scope: process.env.CLIENT_SCOPES,
       client_id: process.env.CLIENT_ID
@@ -174,10 +177,13 @@ class Client {
    * @return {Promise} A promise with the API response
    */
   getToken(args) {
+    console.log('getToken');
+    console.dir(code);
+    console.dir(process.env.CLIENT_ID);
+    console.dir(process.env.CLIENT_SECRET);
     return this.send('oauth.v2.access', {
       code: args.code,
-      state: args.state, 
-      client_id: process.env.CLIENT_ID, 
+      client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET 
     });
   }
