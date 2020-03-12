@@ -11,10 +11,9 @@ const AWS = require("aws-sdk"),
  * @return {Promise} A Promise with the save results
  */
 exports.save = function(data) {
-  console.dir(data);
-  data.id = data.team_id;
+  data.id = data.id || data.authed_user.id || data.team.id;
   return this.query('put', { Item: data });
-}
+};
 
 
 /**
@@ -27,13 +26,13 @@ exports.get = function(id) {
   return this.query('get', { Key: { id: id } }).then(d => {
     return Promise.resolve(d.Item);
   });
-}
+};
 
 
 /**
  * Dynamo Query
  *
- * @param {String} name - The query action to run
+ * @param method
  * @param {Object} params - The query parameters
  * @return {Promise} A Promise with the get result
  */
@@ -45,4 +44,4 @@ exports.query = function(method, params) {
       err ? reject(err) : resolve(data);
     });
   });
-}
+};
