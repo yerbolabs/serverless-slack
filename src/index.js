@@ -71,6 +71,9 @@ class Slack extends EventEmitter {
    * @param {Function} callback - The Lambda callback
    */
   event(event, context, callback) {
+    console.log('handling event');
+    console.dir(event);
+    console.dir(context);
     let payload = event.body;
     let id = payload.team_id;
     let token = process.env.VERIFICATION_TOKEN;
