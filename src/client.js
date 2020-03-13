@@ -38,6 +38,8 @@ class Client {
    * @return {String} the payload's channel
    */
   get channel() {
+    console.log('getChannel: payload structure');
+    console.dir(this.payload);
     let payload = this.payload, event = payload.event;
     // Slash Commands
     if (payload.channel_id) return payload.channel_id;
