@@ -125,9 +125,11 @@ class Client {
     // convert the string message to a message object
     if (typeof(message) === 'string') message = { text: message };
 
+    console.log(`About to send a message to ${this.channel} with token: ${this.token}`);
     // set defaults when available
     message = Object.assign({ token: this.token, channel: this.channel }, message);
-
+    console.log('Full message');
+    console.dir(message);
     // convert json except when passing in a url
     if (!endPoint.match(/^http/i)) message = qs.stringify(message);
     return this.api.post(endPoint, message).then(this.getData);
