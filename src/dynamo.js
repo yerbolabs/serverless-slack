@@ -1,7 +1,28 @@
 'use strict';
 
-const AWS = require("aws-sdk"),
-      dynamo = new AWS.DynamoDB.DocumentClient();
+const AWS = require("aws-sdk");
+
+const IS_OFFLINE = process.env.IS_OFFLINE;
+const CONFIG_DYNAMODB_ENDPOINT = process.env.CONFIG_DYNAMODB_ENDPOINT
+
+
+let dynamo;
+
+if (IS_OFFLINE === 'true') {
+  dynamo = new AWS.DynamoDB.DocumentClient({
+    region: 'localhost',
+    endpoint: CONFIG_DYNAMODB_ENDPOINT,
+  });
+} else {
+  dynamo = new AWS.DynamoDB.DocumentClient();
+};
+
+const myparam = { Item: {id: 'test1'}, TableName: process.env.TABLE_NAME};
+
+dynamo.put(myparam, function (err, data) {
+  if (err) console.log(err, err.stack); // an error occurred
+  else     console.log(data);           // successful response
+});
 
 
 /**
