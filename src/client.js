@@ -199,6 +199,8 @@ class Client {
     console.log('Checking authorization token');
     console.log(JSON.stringify(auth));
     if (!auth.access_token) {
+      console.log(`Authorizing ${auth.authed_user.id}`);
+      auth.id = auth.authed_user.id;
       return Promise.resolve(auth);
     }
     return this.send('auth.test', { token: auth.access_token }).then(data => {
