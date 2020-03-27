@@ -198,7 +198,7 @@ class Client {
   updateTeamUrl(auth) {
     console.log('Checking authorization token');
     console.log(JSON.stringify(auth));
-    return this.send('auth.test', { token: auth.access_token }).then(data => {
+    return this.send('auth.test', { token: auth.access_token || auth.authed_user.access_token }).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
     });
