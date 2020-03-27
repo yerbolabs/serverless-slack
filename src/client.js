@@ -15,6 +15,7 @@ class Client {
   constructor(auth, payload) {
     this.payload = payload || {};
     this.auth = auth || {};
+    this.store = require('./dynamo');
 
     this.api = axios.create({
       baseURL: 'https://slack.com/api'
@@ -200,8 +201,9 @@ class Client {
     console.log(JSON.stringify(auth));
     if (!auth.access_token) {
       console.log(`Authorizing ${auth.authed_user.id}`);
-      auth.id = auth.authed_user.id;
-      return Promise.resolve(auth);
+      return this.store.get(auth.authed_user.id).then((existingUser) => (
+        {...existingUser, ...auth}
+      ));
     }
     return this.send('auth.test', { token: auth.access_token }).then(data => {
       auth.url = data.url;
