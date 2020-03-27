@@ -149,7 +149,7 @@ class Client {
   getData(response) {
     let data = response.data;
 
-    if (data.ok) {
+    if (data.ok || data === 'ok') {
       delete data.ok;
       return Promise.resolve(data);
     } else {
