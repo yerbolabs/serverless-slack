@@ -196,6 +196,8 @@ class Client {
    * @return {Promise} A promise with the updated team access data
    */
   updateTeamUrl(auth) {
+    console.log('Checking authorization token');
+    console.log(JSON.stringify(auth));
     return this.send('auth.test', { token: auth.access_token }).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
