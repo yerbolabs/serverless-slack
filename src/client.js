@@ -124,7 +124,7 @@ class Client {
     // convert the string message to a message object
     if (typeof(message) === 'string') message = { text: message };
 
-    console.log(`About to send a message to ${this.channel} with token: ${this.token}`);
+    console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
     // set defaults when available
     message = Object.assign({ token: this.token, channel: this.channel }, message);
     console.log('Full message');
