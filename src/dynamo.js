@@ -24,7 +24,7 @@ if (IS_OFFLINE === 'true') {
  */
 exports.save = function(data) {
   data.id = data.id || data.team_id || data.team.id;
-  return this.query('put', { Item: data });
+  return this.query('put', { Item: data }).then( () => data);
 };
 
 
