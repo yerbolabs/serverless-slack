@@ -61,10 +61,14 @@ class Slack extends EventEmitter {
       this.emit('*', payload);
       this.emit('install_success', payload);
       callback(null, {
-        statusCode: 301,
+        status: '302',
+        statusDescription: 'Found',
         headers: {
-          Location: redirectUrl,
-        }
+          location: [{
+            key: 'Location',
+            value: redirectUrl,
+          }],
+        },
       });
     }
 
@@ -74,10 +78,14 @@ class Slack extends EventEmitter {
     } else { 
       // sends a 301 redirect
       callback(null, {
-        statusCode: 301,
+        status: '302',
+        statusDescription: 'Found',
         headers: {
-          Location: client.getAuthUrl(payload),
-        }
+          location: [{
+            key: 'Location',
+            value: client.getAuthUrl(payload),
+          }],
+        },
       });
     }
   }
