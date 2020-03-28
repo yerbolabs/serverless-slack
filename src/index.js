@@ -58,8 +58,8 @@ class Slack extends EventEmitter {
     }
 
     let success = result => {
-      this.emit('*', payload);
-      this.emit('install_success', payload);
+      this.emit('*', result);
+      this.emit('install_success', result);
       context.callbackWaitsForEmptyEventLoop = true;
       callback(redirectUrl);
     }
