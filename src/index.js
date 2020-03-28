@@ -10,6 +10,7 @@ class Slack extends EventEmitter {
     super();
     this.store = require('./dynamo'); // default
     this.ignoreBots = false; // ignore other bot message
+    this.client = new Client();
   }
 
 
