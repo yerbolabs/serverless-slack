@@ -61,7 +61,7 @@ class Slack extends EventEmitter {
       this.emit('*', payload);
       this.emit('install_success', payload);
       callback(null, {
-        status: '301',
+        status: 301,
         statusDescription: 'Found',
         headers: {
           Location: redirectUrl,
@@ -76,7 +76,7 @@ class Slack extends EventEmitter {
     } else { 
       // sends a 301 redirect
       callback(null, {
-        status: '302',
+        status: 301,
         statusDescription: 'Found',
         headers: {
           Location: client.getAuthUrl(payload),
