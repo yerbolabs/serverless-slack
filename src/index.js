@@ -51,17 +51,21 @@ class Slack extends EventEmitter {
     let payload = event.query;
     let save = this.store.save.bind(this.store);
     let redirectUrl = `${process.env.INSTALL_REDIRECT}?state=${payload.state}`;
-
     let fail = error => {
       this.emit('*', error, payload);
       this.emit('install_error', error, payload);
-      callback(null, `${redirectUrl}&error=${JSON.stringify(error)}`);
+      callback(`${redirectUrl}&error=${JSON.stringify(error)}`);
     }
 
     let success = result => {
       this.emit('*', payload);
       this.emit('install_success', payload);
-      callback(null, redirectUrl);
+      callback(null, {
+        statusCode: 301,
+        headers: {
+          Location: redirectUrl,
+        }
+      });
     }
 
     if (payload.code) {
@@ -69,7 +73,12 @@ class Slack extends EventEmitter {
       client.install(payload).then(save).then(success).catch(fail);
     } else { 
       // sends a 301 redirect
-      callback(null, client.getAuthUrl(payload));
+      callback(null, {
+        statusCode: 301,
+        headers: {
+          Location: client.getAuthUrl(payload),
+        }
+      });
     }
   }
 
