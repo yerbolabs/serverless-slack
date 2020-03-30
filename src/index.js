@@ -35,8 +35,8 @@ class Slack extends EventEmitter {
    *
    * @param {Object} response A response object or string
    */
-  callback(response) {
-    if (this.callbackFn) this.callbackFn(null, JSON.stringify(response));
+  callback(err, response) {
+    if (this.callbackFn) this.callbackFn(err, JSON.stringify(response));
   }
 
 
