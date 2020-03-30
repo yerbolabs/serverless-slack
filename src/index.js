@@ -62,9 +62,9 @@ class Slack extends EventEmitter {
       let bot = new Client(result.authed_user, payload);
       this.emit('*', result);
       this.emit('install_success', result, bot);
-      context.callbackWaitsForEmptyEventLoop = true;
+      // context.callbackWaitsForEmptyEventLoop = true;
       // callback(redirectUrl);
-      callback(null, 'Thanks, you can now use the bot!');
+      // callback(null, 'Thanks, you can now use the bot!');
     }
 
     if (payload.code) {
