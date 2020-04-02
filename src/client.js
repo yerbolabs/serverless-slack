@@ -167,6 +167,7 @@ class Client {
   getAuthUrl(args) {
     args = Object.assign({}, args, {
       scope: process.env.CLIENT_SCOPES,
+      user_scope: process.env.CLIENT_USER_SCOPES,
       client_id: process.env.CLIENT_ID
     });
 
