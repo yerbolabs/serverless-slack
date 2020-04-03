@@ -73,7 +73,7 @@ class Slack extends EventEmitter {
     } else { 
       // sends a 301 redirect
       context.callbackWaitsForEmptyEventLoop = true;
-      callback(null, client.getAuthUrl(payload));
+      callback(client.getAuthUrl(payload));
     }
   }
 
