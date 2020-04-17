@@ -135,8 +135,9 @@ class Client {
         if (typeof message.attachments === 'string')
         {
           message.attachments = message.attachments.replace(/^'(.*)'$/, '$1');
+        } else {
+          message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
         }
-        message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
       }
       message = qs.stringify(message);
     }
