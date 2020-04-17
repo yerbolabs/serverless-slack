@@ -132,6 +132,10 @@ class Client {
     // convert json except when passing in a url
     if (!endPoint.match(/^http/i)) {
       if (message.attachments) {
+        if (typeof message.attachments === 'string')
+        {
+          message.attachments = message.attachments.replace(/^'(.*)'$/, '$1');
+        }
         message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
       }
       message = qs.stringify(message);
