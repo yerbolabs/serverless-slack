@@ -128,7 +128,7 @@ class Client {
     // set defaults when available
     message = Object.assign({ token: this.token, channel: this.channel }, message);
     console.log('Full message');
-    console.dir(message);
+    console.log(JSON.stringify(message));
     // convert json except when passing in a url
     if (!endPoint.match(/^http/i)) {
       if (message.attachments) {
