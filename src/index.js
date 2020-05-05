@@ -108,6 +108,7 @@ class Slack extends EventEmitter {
     if (!this.ignoreBots || !(payload.event || payload).bot_id) {
       // Load Auth And Trigger Events
       this.store.get(id).then(this.notify.bind(this, payload));
+      return callback(null, {ok: true});
     }
   }
 
