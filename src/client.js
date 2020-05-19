@@ -126,7 +126,7 @@ class Client {
 
     console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
     // set defaults when available
-    message = Object.assign({ token: this.token, channel: this.channel }, message);
+    message = Object.assign({ channel: this.channel }, message);
     console.log('Full message');
     console.log(JSON.stringify(message));
     // convert json except when passing in a url
@@ -141,7 +141,12 @@ class Client {
     //   }
     //   message = qs.stringify(message);
     // }
-    return this.api.post(endPoint, message).then(this.getData);
+    return this.api.post(endPoint, message, {
+      headers: {
+        Authorization: `Bearer ${this.token || message.token}`,
+        'Content-type': 'application/json'
+      }
+    }).then(this.getData);
   }
 
 
