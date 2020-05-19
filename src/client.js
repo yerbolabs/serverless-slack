@@ -130,17 +130,17 @@ class Client {
     console.log('Full message');
     console.log(JSON.stringify(message));
     // convert json except when passing in a url
-    if (!endPoint.match(/^http/i)) {
-      if (message.attachments) {
-        if (typeof message.attachments === 'string')
-        {
-          message.attachments = message.attachments.replace(/^'(.*)'$/, '$1');
-        } else {
-          message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
-        }
-      }
-      message = qs.stringify(message);
-    }
+    // if (!endPoint.match(/^http/i)) {
+    //   if (message.attachments) {
+    //     if (typeof message.attachments === 'string')
+    //     {
+    //       message.attachments = message.attachments.replace(/^'(.*)'$/, '$1');
+    //     } else {
+    //       message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
+    //     }
+    //   }
+    //   message = qs.stringify(message);
+    // }
     return this.api.post(endPoint, message).then(this.getData);
   }
 
