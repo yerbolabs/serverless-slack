@@ -200,7 +200,7 @@ class Client {
       code: args.code,
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET 
-    }));
+    })).then(this.getData);
   }
 
 
@@ -222,7 +222,7 @@ class Client {
     return this.api.post('auth.test', qs.stringify({ token: auth.access_token })).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
-    });
+    }).then(this.getData);
   }
 
 
