@@ -219,10 +219,10 @@ class Client {
         {...existingUser, ...auth}
       ));
     }
-    return this.api.post('auth.test', qs.stringify({ token: auth.access_token })).then(data => {
+    return this.api.post('auth.test', qs.stringify({ token: auth.access_token })).then(this.getData).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
-    }).then(this.getData);
+    });
   }
 
 
