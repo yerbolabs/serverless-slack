@@ -122,7 +122,7 @@ class Client {
    */
   send(endPoint, message) {
     // convert the string message to a message object
-    if (typeof(message) === 'string') message = { text: message };
+    if (!endPoint.includes('auth') && typeof(message) === 'string') message = { text: message };
 
     console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
     // set defaults when available
@@ -141,13 +141,10 @@ class Client {
     //   }
     //   message = qs.stringify(message);
     // }
-    const headers = endPoint.includes('auth') ? {
-      'Content-type': 'application/x-www-form-urlencoded',
-
-  } : {
+    const headers = !endPoint.includes('auth') ? {
       Authorization: `Bearer ${this.token || message.token}`,
       'Content-type': 'application/json'
-    }
+    } : {};
 
 
     return this.api.post(endPoint, message, {
