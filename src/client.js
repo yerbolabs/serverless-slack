@@ -122,7 +122,7 @@ class Client {
    */
   send(endPoint, message) {
     // convert the string message to a message object
-    if (!endPoint.includes('auth') && typeof(message) === 'string') message = { text: message };
+    if (typeof(message) === 'string') message = { text: message };
 
     console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
     // set defaults when available
@@ -141,10 +141,10 @@ class Client {
     //   }
     //   message = qs.stringify(message);
     // }
-    const headers = !endPoint.includes('auth') ? {
+    const headers = {
       Authorization: `Bearer ${this.token || message.token}`,
       'Content-type': 'application/json'
-    } : {};
+    };
 
 
     return this.api.post(endPoint, message, {
@@ -196,7 +196,7 @@ class Client {
    * @return {Promise} A promise with the API response
    */
   getToken(args) {
-    return this.send('oauth.v2.access', qs.stringify({
+    return this.api.post('oauth.v2.access', qs.stringify({
       code: args.code,
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET 
@@ -219,7 +219,7 @@ class Client {
         {...existingUser, ...auth}
       ));
     }
-    return this.send('auth.test', qs.stringify({ token: auth.access_token })).then(data => {
+    return this.api.post('auth.test', qs.stringify({ token: auth.access_token })).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
     });
