@@ -141,11 +141,17 @@ class Client {
     //   }
     //   message = qs.stringify(message);
     // }
+    const headers = endPoint.includes('auth') ? {
+      'Content-type': 'application/x-www-form-urlencoded',
+
+  } : {
+      Authorization: `Bearer ${this.token || message.token}`,
+      'Content-type': 'application/json'
+    }
+
+
     return this.api.post(endPoint, message, {
-      headers: {
-        Authorization: `Bearer ${this.token || message.token}`,
-        'Content-type': 'application/json'
-      }
+      headers,
     }).then(this.getData);
   }
 
@@ -193,11 +199,11 @@ class Client {
    * @return {Promise} A promise with the API response
    */
   getToken(args) {
-    return this.send('oauth.v2.access', {
+    return this.send('oauth.v2.access', qs.stringify({
       code: args.code,
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET 
-    });
+    }));
   }
 
 
@@ -216,7 +222,7 @@ class Client {
         {...existingUser, ...auth}
       ));
     }
-    return this.send('auth.test', { token: auth.access_token }).then(data => {
+    return this.send('auth.test', qs.stringify({ token: auth.access_token })).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
     });
