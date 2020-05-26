@@ -123,7 +123,7 @@ class Client {
   send(endPoint, message) {
     // convert the string message to a message object
     const config = {};
-    if (endPoint === 'chat.postMessage') {
+    if (['chat.postMessage', 'chat.update', 'chat.delete', 'chat.scheduleMessage', 'views.open', 'chat.deleteScheduledMessage', 'chat.scheduledMessages.list'].includes(endPoint)) {
       if (typeof(message) === 'string') message = { text: message };
       config.headers =  {
         Authorization: `Bearer ${this.token || message.token}`,
@@ -136,6 +136,7 @@ class Client {
       console.log(JSON.stringify(message));
     } else {
       // convert json except when passing in a url
+      message = Object.assign({ channel: this.channel }, message);
       if (!endPoint.match(/^http/i)) {
         message = qs.stringify(message);
       }
