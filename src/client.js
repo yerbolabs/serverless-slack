@@ -123,7 +123,18 @@ class Client {
   send(endPoint, message) {
     // convert the string message to a message object
     const config = {};
-    if (['chat.postMessage', 'chat.update', 'chat.delete', 'chat.scheduleMessage', 'views.open', 'chat.deleteScheduledMessage', 'chat.scheduledMessages.list'].includes(endPoint)) {
+    if ([
+      'chat.postMessage',
+      'chat.update',
+      'chat.delete',
+      'chat.scheduleMessage',
+      'chat.deleteScheduledMessage',
+      'chat.scheduledMessages.list',
+      'views.open',
+      'views.publish',
+      'views.push',
+      'views.update'
+    ].includes(endPoint)) {
       if (typeof(message) === 'string') message = { text: message };
       config.headers =  {
         Authorization: `Bearer ${this.token || message.token}`,
