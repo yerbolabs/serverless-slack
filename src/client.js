@@ -137,9 +137,12 @@ class Client {
     ].includes(endPoint)) {
       if (typeof(message) === 'string') message = { text: message };
       config.headers =  {
-        Authorization: `Bearer ${message.token || this.token}`,
         'Content-type': 'application/json'
       };
+      const token = message.token || this.token;
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
       console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
       // set defaults when available
       message = Object.assign({ channel: this.channel }, message);
