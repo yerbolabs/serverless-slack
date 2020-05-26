@@ -122,34 +122,26 @@ class Client {
    */
   send(endPoint, message) {
     // convert the string message to a message object
-    if (typeof(message) === 'string') message = { text: message };
+    const config = {};
+    if (endPoint === 'chat.postMessage') {
+      if (typeof(message) === 'string') message = { text: message };
+      config.headers =  {
+        Authorization: `Bearer ${this.token || message.token}`,
+        'Content-type': 'application/json'
+      };
+      console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
+      // set defaults when available
+      message = Object.assign({ channel: this.channel }, message);
+      console.log('Full message');
+      console.log(JSON.stringify(message));
+    } else {
+      // convert json except when passing in a url
+      if (!endPoint.match(/^http/i)) {
+        message = qs.stringify(message);
+      }
+    }
 
-    console.log(`About to send a message to ${this.channel || message.channel} with token: ${this.token || message.token}`);
-    // set defaults when available
-    message = Object.assign({ channel: this.channel }, message);
-    console.log('Full message');
-    console.log(JSON.stringify(message));
-    // convert json except when passing in a url
-    // if (!endPoint.match(/^http/i)) {
-    //   if (message.attachments) {
-    //     if (typeof message.attachments === 'string')
-    //     {
-    //       message.attachments = message.attachments.replace(/^'(.*)'$/, '$1');
-    //     } else {
-    //       message.attachments = JSON.stringify(message.attachments).replace(/^'(.*)'$/, '$1');
-    //     }
-    //   }
-    //   message = qs.stringify(message);
-    // }
-    const headers = {
-      Authorization: `Bearer ${this.token || message.token}`,
-      'Content-type': 'application/json'
-    };
-
-
-    return this.api.post(endPoint, message, {
-      headers,
-    }).then(this.getData);
+    return this.api.post(endPoint, message, config).then(this.getData);
   }
 
 
@@ -196,11 +188,11 @@ class Client {
    * @return {Promise} A promise with the API response
    */
   getToken(args) {
-    return this.api.post('oauth.v2.access', qs.stringify({
+    return this.send('oauth.v2.access', {
       code: args.code,
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET 
-    })).then(this.getData);
+    });
   }
 
 
@@ -219,7 +211,7 @@ class Client {
         {...existingUser, ...auth}
       ));
     }
-    return this.api.post('auth.test', qs.stringify({ token: auth.access_token })).then(this.getData).then(data => {
+    return this.send('auth.test', { token: auth.access_token }).then(data => {
       auth.url = data.url;
       return Promise.resolve(auth);
     });
