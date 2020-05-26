@@ -147,7 +147,7 @@ class Client {
       console.log(JSON.stringify(message));
     } else {
       // convert json except when passing in a url
-      message = Object.assign({ channel: this.channel }, message);
+      message = Object.assign({ channel: this.channel, token: this.token }, message);
       if (!endPoint.match(/^http/i)) {
         message = qs.stringify(message);
       }
