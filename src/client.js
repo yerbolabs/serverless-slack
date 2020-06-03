@@ -173,7 +173,7 @@ class Client {
       delete data.ok;
       return Promise.resolve(data);
     } else {
-      return Promise.reject(data);
+      return Promise.reject(new Error(data));
     }
   }
 
