@@ -3,6 +3,7 @@
 const axios = require('axios'),
       qs = require('querystring');
 
+const SlackError = require('./slack-error');
 
 class Client {
 
@@ -173,7 +174,7 @@ class Client {
       delete data.ok;
       return Promise.resolve(data);
     } else {
-      return Promise.reject(new Error(JSON.stringify(data)));
+      return Promise.reject(new SlackError(data));
     }
   }
 

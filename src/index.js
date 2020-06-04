@@ -2,6 +2,7 @@
 
 const Client = require('./client'),
       EventEmitter = require('events');
+const SlackError = require('./slack-error');
 
 
 class Slack extends EventEmitter {
@@ -11,6 +12,7 @@ class Slack extends EventEmitter {
     this.store = require('./dynamo'); // default
     this.ignoreBots = false; // ignore other bot message
     this.client = new Client();
+    this.SlackError = SlackError;
   }
 
 
