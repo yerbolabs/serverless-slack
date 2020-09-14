@@ -6,7 +6,7 @@ const SlackError = require('./slack-error');
 
 
 class Slack extends EventEmitter {
-  
+
   constructor(options) {
     super();
     this.store = require('./dynamo'); // default
@@ -72,7 +72,7 @@ class Slack extends EventEmitter {
     if (payload.code) {
       // install app
       client.install(payload).then(save).then(success).catch(fail);
-    } else { 
+    } else {
       // sends a 301 redirect
       context.callbackWaitsForEmptyEventLoop = true;
       callback(client.getAuthUrl(payload));
@@ -109,7 +109,10 @@ class Slack extends EventEmitter {
     // Ignore Bot Messages
     if (!this.ignoreBots || !(payload.event || payload).bot_id) {
       // Load Auth And Trigger Events
-      this.store.get(id).then(this.notify.bind(this, payload));
+      this.store
+        .get(id)
+        .then(this.notify.bind(this, payload))
+        .then(() => callback());
     }
   }
 
@@ -139,7 +142,10 @@ class Slack extends EventEmitter {
     if (payload.callback_id) events.push('interactive_message', payload.callback_id);
 
     // trigger all events
-    events.forEach(name => this.emit(name, payload, bot, this.store));
+    return Promise.allSettled(events.flatMap((name) => {
+      const listeners = this.listeners(name);
+      return listeners.map((listener) => listener(payload, bot, this.store));
+    }));
   }
 
 }
