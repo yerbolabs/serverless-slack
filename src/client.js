@@ -225,15 +225,16 @@ class Client {
       console.log(`Authorizing ${auth.authed_user.id}`);
       return this.store
         .get(auth.authed_user.id)
-        .then((existingUser) => ({...existingUser, ...auth}));
+        .then((existingUser) => ({ ...existingUser, ...auth }));
     }
     return this.send('auth.test', { token: auth.access_token })
-      .then(data => {
-        auth.url = data.url;
-        return this.store
-          .get(auth.team.id)
-          .then((existingTeam) => ({ ...existingTeam, ...auth }));
-      });
+      .then(({ url }) => this.store
+        .get(auth.team.id)
+        .then((existingTeam) => ({
+          ...existingTeam,
+          ...auth,
+          url,
+        })));
   }
 
 
